@@ -13,6 +13,7 @@ import TasksPage from '../pages/tasks/TaskPage.jsx';
 import CreateTaskPage from '../pages/tasks/CreateTaskPage.jsx';
 import TaskDetailsPage from '../pages/tasks/TaskDetailsPage.jsx';
 import EditTaskPage from '../pages/tasks/EditTaskPage.jsx';
+import Layout from '../components/Layout.jsx';
 
 import ProtectedRoute from './ProtectedRoute.jsx';
 
@@ -27,6 +28,8 @@ const AppRouter = () => {
 
         {/* PROTECTED */}
         <Route element={<ProtectedRoute />}>
+                  <Route element={<Layout />}>
+
           <Route path="/dashboard" element={<DashboardPage />} />
 
           <Route path="/tasks" element={<TasksPage />} />
@@ -34,7 +37,7 @@ const AppRouter = () => {
           <Route path="/tasks/:id" element={<TaskDetailsPage />} />
           <Route path="/tasks/:id/edit" element={<EditTaskPage />} />
         </Route>
-
+</Route>
         {/* DEFAULT */}
         <Route
           path="/"
