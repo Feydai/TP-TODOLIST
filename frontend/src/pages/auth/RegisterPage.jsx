@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Step from '../../components/auth/Step.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 import {
   Alert,
@@ -33,17 +34,11 @@ const RegisterPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setError('');
-
-    if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.');
-      return;
-    }
-
     try {
+      setError('');
       await register(email, password);
-
       navigate('/dashboard');
+
     } catch (error) {
       setError(error.message);
     }
@@ -201,11 +196,8 @@ const RegisterPage = () => {
 
           {/* Erreur API */}
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+         <ErrorMessage message={error} />
+
 
           {/* Email */}
 

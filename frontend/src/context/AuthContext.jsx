@@ -1,49 +1,27 @@
 import { createContext, useState } from 'react';
+import { authService } from '../services/authService';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-    const register = async (email, password) => {
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Erreur lors de l'inscription");
-    }
+  const login = async (email, password) => {
+    const data = await authService.login(email, password);
 
     localStorage.setItem('token', data.token);
     setUser(data.user);
+
+    return data;
   };
 
-  const login = async (email, password) => {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Erreur de connexion');
-    }
+  const register = async (email, password) => {
+    const data = await authService.register(email, password);
 
     localStorage.setItem('token', data.token);
     setUser(data.user);
+
+    return data;
   };
 
   const logout = () => {
@@ -55,8 +33,8 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        register,
         login,
+        register,
         logout,
         isAuthenticated: !!user,
       }}

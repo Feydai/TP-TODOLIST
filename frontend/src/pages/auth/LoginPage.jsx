@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 import {
   Box,
   Button,
@@ -196,11 +196,8 @@ const LoginPage = () => {
             Connectez-vous pour retrouver vos tâches.
           </Typography>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+          <ErrorMessage message={error} />
+
 
           <TextField
             label="Adresse email"
