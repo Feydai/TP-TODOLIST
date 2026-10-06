@@ -11,7 +11,7 @@ import {
   Typography,
   Alert,
 } from '@mui/material';
-
+import AppButton from '../../components/common/AppButton.jsx';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -73,10 +73,7 @@ const LoginPage = () => {
         >
           <CheckCircleIcon sx={{ fontSize: 34 }} />
 
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: 700 }}
-          >
+          <Typography variant="h5" sx={{ fontWeight: 700 }}>
             TaskFlow
           </Typography>
         </Box>
@@ -112,14 +109,13 @@ const LoginPage = () => {
               mb: 4,
             }}
           >
-            Créez, consultez et mettez à jour vos tâches personnelles.
-            Elles restent privées : elles ne sont visibles que depuis
-            votre compte.
+            Créez, consultez et mettez à jour vos tâches personnelles. Elles
+            restent privées : elles ne sont visibles que depuis votre compte.
           </Typography>
 
           <Feature
             icon={<AutorenewIcon />}
-            text='Statuts « À faire », « En cours », « Terminée »'
+            text="Statuts « À faire », « En cours », « Terminée »"
           />
 
           <Feature
@@ -133,9 +129,7 @@ const LoginPage = () => {
           />
         </Box>
 
-        <Typography variant="body2">
-          Projet Full Stack JS · EFREI
-        </Typography>
+        <Typography variant="body2">Projet Full Stack JS · EFREI</Typography>
       </Box>
 
       {/* Partie droite */}
@@ -180,24 +174,15 @@ const LoginPage = () => {
             </Box>
           </Box>
 
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{ mb: 1 }}
-          >
+          <Typography variant="h4" align="center" sx={{ mb: 1 }}>
             Connexion
           </Typography>
 
-          <Typography
-            color="text.secondary"
-            align="center"
-            sx={{ mb: 4 }}
-          >
+          <Typography color="text.secondary" align="center" sx={{ mb: 4 }}>
             Connectez-vous pour retrouver vos tâches.
           </Typography>
 
           <ErrorMessage message={error} />
-
 
           <TextField
             label="Adresse email"
@@ -237,25 +222,16 @@ const LoginPage = () => {
             }}
           />
 
-          <Button
+          <AppButton
+            text="SE CONNECTER"
+            color="primary"
             type="submit"
-            variant="contained"
             fullWidth
-            size="large"
-            sx={{
-              py: 1.5,
-              fontWeight: 700,
-            }}
-          >
-            SE CONNECTER
-          </Button>
+          />
 
           <Divider sx={{ my: 4 }} />
 
-          <Typography
-            align="center"
-            color="text.secondary"
-          >
+          <Typography align="center" color="text.secondary">
             Pas encore de compte ?{' '}
             <Typography
               component={Link}
@@ -298,9 +274,7 @@ const Feature = ({ icon, text }) => {
         {icon}
       </Box>
 
-      <Typography sx={{ fontWeight: 500 }}>
-        {text}
-      </Typography>
+      <Typography sx={{ fontWeight: 500 }}>{text}</Typography>
     </Box>
   );
 };

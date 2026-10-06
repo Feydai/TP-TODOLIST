@@ -26,9 +26,7 @@ const Step = ({ number, text, active = false }) => {
         {number}
       </Box>
 
-      <Typography fontWeight={500}>
-        {text}
-      </Typography>
+      <Typography fontWeight={500}>{text}</Typography>
     </Box>
   );
 };

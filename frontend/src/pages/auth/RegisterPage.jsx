@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Step from '../../components/auth/Step.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
-
+import AppButton from '../../components/common/AppButton.jsx';
 import {
   Alert,
   Box,
@@ -38,7 +38,6 @@ const RegisterPage = () => {
       setError('');
       await register(email, password);
       navigate('/dashboard');
-
     } catch (error) {
       setError(error.message);
     }
@@ -118,20 +117,12 @@ const RegisterPage = () => {
 
           <Step number="1" text="Créez votre compte" active />
 
-          <Step
-            number="2"
-            text="Ajoutez votre première tâche"
-          />
+          <Step number="2" text="Ajoutez votre première tâche" />
 
-          <Step
-            number="3"
-            text="Suivez son statut jusqu'à « Terminée »"
-          />
+          <Step number="3" text="Suivez son statut jusqu'à « Terminée »" />
         </Box>
 
-        <Typography variant="body2">
-          Projet Full Stack JS · EFREI
-        </Typography>
+        <Typography variant="body2">Projet Full Stack JS · EFREI</Typography>
       </Box>
 
       {/* ================= DROITE ================= */}
@@ -178,26 +169,17 @@ const RegisterPage = () => {
             </Box>
           </Box>
 
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{ mb: 1 }}
-          >
+          <Typography variant="h4" align="center" sx={{ mb: 1 }}>
             Créer un compte
           </Typography>
 
-          <Typography
-            color="text.secondary"
-            align="center"
-            sx={{ mb: 4 }}
-          >
+          <Typography color="text.secondary" align="center" sx={{ mb: 4 }}>
             Tous les champs sont obligatoires.
           </Typography>
 
           {/* Erreur API */}
 
-         <ErrorMessage message={error} />
-
+          <ErrorMessage message={error} />
 
           {/* Email */}
 
@@ -232,9 +214,7 @@ const RegisterPage = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() =>
-                        setShowPassword(!showPassword)
-                      }
+                      onClick={() => setShowPassword(!showPassword)}
                       edge="end"
                     >
                       {showPassword ? (
@@ -249,31 +229,20 @@ const RegisterPage = () => {
             }}
           />
 
-     
-
           {/* Submit */}
 
-          <Button
+          <AppButton
+            text="S'INSCRIRE"
+            color="primary"
             type="submit"
-            variant="contained"
-            size="large"
             fullWidth
-            sx={{
-              py: 1.5,
-              fontWeight: 700,
-            }}
-          >
-            S'INSCRIRE
-          </Button>
+          />
 
           <Divider sx={{ my: 4 }} />
 
           {/* Login */}
 
-          <Typography
-            align="center"
-            color="text.secondary"
-          >
+          <Typography align="center" color="text.secondary">
             Déjà un compte ?{' '}
             <Typography
               component={Link}

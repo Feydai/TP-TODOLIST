@@ -77,9 +77,7 @@ const Header = () => {
             gap: 2,
           }}
         >
-          <Typography fontWeight={500}>
-            {user?.email}
-          </Typography>
+          <Typography fontWeight={500}>{user?.email}</Typography>
 
           <Avatar
             sx={{

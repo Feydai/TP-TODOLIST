@@ -10,7 +10,7 @@ const register = async (email, password) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.error?.message  || "Erreur lors de l'inscription");
+    throw new Error(data.error?.message || "Erreur lors de l'inscription");
   }
 
   return data;
