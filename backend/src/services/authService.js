@@ -39,4 +39,21 @@ async function login(email, password) {
 async function logout(email, password) {
   return { message: 'Déconnexion réussie' };
 }
-module.exports = { register, login, logout };
+
+async function getUserById(id) {
+  if (!id) return null;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) return null;
+    return publicUser(user);
+  } catch (err) {
+    if (err.name === 'CastError') {
+      return null;
+    } else {
+      throw err;
+    }
+  }
+}
+
+module.exports = { register, login, logout, getUserById };
