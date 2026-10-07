@@ -80,31 +80,32 @@ function validateTask(data, isPatch = false) {
     return null;
 }
 
-async function createTask(data) {
+async function createTask(data, ownerId) {
 
     const task = await Task.create({
         title: data.title.trim(),
         description: data.description,
         status: data.status ?? 'todo',
-        dueDate: data.dueDate ?? null
+        dueDate: data.dueDate ?? null,
+        ownerId
     });
 
     return task;
 }
 
-async function getTasks() {
-    const tasks = await Task.find();
+async function getTasks(ownerId) {
+    const tasks = await Task.find({ ownerId });
 
     return tasks;
 }
 
-async function updateTask(id, data) {
+async function updateTask(id, data, ownerId) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return { error: 'INVALID_ID' };
     }
 
-    const task = await Task.findByIdAndUpdate(
-        id,
+    const task = await Task.findOneAndUpdate(
+        { _id: id, ownerId },
         {
             ...data,
             ...(data.title !== undefined && {
@@ -124,12 +125,12 @@ async function updateTask(id, data) {
     return { task };
 }
 
-async function deleteTask(id) {
+async function deleteTask(id, ownerId) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return { error: 'INVALID_ID' };
     }
 
-    const task = await Task.findByIdAndDelete(id);
+    const task = await Task.findOneAndDelete({ _id: id, ownerId });
 
     if (!task) {
         return { error: 'NOT_FOUND' };
