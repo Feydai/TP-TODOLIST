@@ -72,3 +72,36 @@ describe('GET /api/tasks/:id', () => {
     expect(taskService.getTask).not.toHaveBeenCalled();
   });
 });
+describe('GET /api/tasks', () => {
+  test('returns the tasks of the authenticated user', async () => {
+    const tasks = [{ id: taskId, title: 'Réviser', status: 'todo', dueDate: '2026-10-05' }];
+    taskService.getTasks.mockResolvedValue(tasks);
+
+    const response = await request(app)
+      .get('/api/tasks')
+      .set('Authorization', `Bearer ${createToken()}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ items: tasks });
+    expect(taskService.getTasks).toHaveBeenCalledWith(userId);
+  });
+
+  test('returns an empty list when the user has no task', async () => {
+    taskService.getTasks.mockResolvedValue([]);
+
+    const response = await request(app)
+      .get('/api/tasks')
+      .set('Authorization', `Bearer ${createToken()}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ items: [] });
+  });
+
+  test('requires an authentication token', async () => {
+    const response = await request(app).get('/api/tasks');
+
+    expect(response.status).toBe(401);
+    expect(response.body.error.code).toBe('UNAUTHORIZED');
+    expect(taskService.getTasks).not.toHaveBeenCalled();
+  });
+});

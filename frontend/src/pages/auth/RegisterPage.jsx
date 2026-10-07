@@ -35,7 +35,7 @@ const RegisterPage = () => {
     try {
       setError('');
       await register(email, password);
-      navigate('/dashboard');
+      navigate('/tasks');
     } catch (error) {
       setError(error.message);
     }

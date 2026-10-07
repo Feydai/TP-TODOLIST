@@ -68,7 +68,7 @@ function validateTask(data, isPatch = false) {
 
         const date = new Date(`${data.dueDate}T00:00:00Z`);
 
-        if (Number.isNaN(date.getTime())) {
+        if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== data.dueDate) {
             return 'La date est invalide';
         }
     }

@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
+  Button,
   CircularProgress,
   Container,
+  InputAdornment,
   Paper,
   Tab,
   Tabs,
@@ -14,6 +16,9 @@ import {
 
 import AddIcon from '@mui/icons-material/Add';
 import AppSnackbar from '../../components/common/AppSnackBar';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import SearchIcon from '@mui/icons-material/Search';
+
 import AppButton from '../../components/common/AppButton.jsx';
 import ConfirmDialog from '../../components/common/ConfirmDialogue.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
@@ -38,7 +43,7 @@ const TaskPage = () => {
 
     const matchesSearch = task.title
       .toLowerCase()
-      .includes(search.toLowerCase());
+      .includes(search.trim().toLowerCase());
 
     return matchesStatus && matchesSearch;
   });
@@ -75,34 +80,28 @@ const TaskPage = () => {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          mt: 10,
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
         <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 5 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-end',
+          gap: 2,
           mb: 3,
         }}
       >
         <Box>
-          <Typography variant="h4" fontWeight={600}>
-            Mes tâches
-          </Typography>
+          <Typography variant="h4">Mes tâches</Typography>
 
-          <Typography color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             {tasks.length} tâches · {doneCount} terminées
           </Typography>
         </Box>
@@ -116,51 +115,116 @@ const TaskPage = () => {
 
       <ErrorMessage message={error} />
 
-      <Paper>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            px: 1,
-          }}
-        >
-          <Tabs value={filter} onChange={(_, value) => setFilter(value)}>
-            <Tab value="all" label={`TOUTES ${tasks.length}`} />
-            <Tab value="todo" label={`À FAIRE ${todoCount}`} />
-            <Tab value="doing" label={`EN COURS ${doingCount}`} />
-            <Tab value="done" label={`TERMINÉES ${doneCount}`} />
-          </Tabs>
+      <Paper sx={{ overflow: 'hidden' }}>
+        {tasks.length === 0 ? (
+          <Box
+            sx={{
+              py: 9,
+              px: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              textAlign: 'center',
+            }}
+          >
+            <Box
+              sx={{
+                width: 88,
+                height: 88,
+                borderRadius: '50%',
+                bgcolor: '#e3f2fd',
+                color: 'primary.main',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <AssignmentTurnedInIcon sx={{ fontSize: 44 }} />
+            </Box>
 
-          <TextField
-            size="small"
-            placeholder="Rechercher une tâche"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            sx={{ width: 320 }}
-          />
-        </Box>
+            <Typography variant="h6">Aucune tâche pour le moment</Typography>
 
-        <TaskTable
-          tasks={filteredTasks}
-          onView={(id) => navigate(`/tasks/${id}`)}
-          onEdit={(id) => navigate(`/tasks/${id}/edit`)}
-          onDelete={setTaskToDelete}
-        />
+            <Typography variant="body2" color="text.secondary">
+              Créez votre première tâche pour commencer à suivre votre travail.
+            </Typography>
 
-        <Box sx={{ p: 2, textAlign: 'right' }}>
-          <Typography variant="body2" color="text.secondary">
-            {filteredTasks.length} sur {tasks.length} tâches affichées
-          </Typography>
-        </Box>
+            <Button
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={() => navigate('/tasks/new')}
+            >
+              CRÉER UNE TÂCHE
+            </Button>
+          </Box>
+        ) : (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 1.5,
+                pl: 1,
+                pr: 2,
+                borderBottom: 1,
+                borderColor: 'divider',
+              }}
+            >
+              <Tabs
+                value={filter}
+                onChange={(_, value) => setFilter(value)}
+                variant="scrollable"
+                allowScrollButtonsMobile
+              >
+                <Tab value="all" label={`Toutes (${tasks.length})`} />
+                <Tab value="todo" label={`À faire (${todoCount})`} />
+                <Tab value="doing" label={`En cours (${doingCount})`} />
+                <Tab value="done" label={`Terminées (${doneCount})`} />
+              </Tabs>
+
+              <TextField
+                size="small"
+                placeholder="Rechercher une tâche"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                sx={{ width: { xs: '100%', sm: 280 }, my: 1 }}
+                slotProps={{
+                  htmlInput: { 'aria-label': 'Rechercher une tâche' },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </Box>
+
+            <TaskTable
+              tasks={filteredTasks}
+              onView={(id) => navigate(`/tasks/${id}`)}
+              onEdit={(id) => navigate(`/tasks/${id}/edit`)}
+              onDelete={setTaskToDelete}
+            />
+
+            <Box sx={{ p: 2, textAlign: 'right' }}>
+              <Typography variant="body2" color="text.secondary">
+                {filteredTasks.length} sur {tasks.length} tâches affichées
+              </Typography>
+            </Box>
+          </>
+        )}
       </Paper>
 
       <ConfirmDialog
         open={Boolean(taskToDelete)}
-        title="Supprimer la tâche"
+        title="Supprimer cette tâche ?"
         message={
           taskToDelete
-            ? `Voulez-vous vraiment supprimer « ${taskToDelete.title} » ?`
+            ? `La tâche « ${taskToDelete.title} » sera supprimée définitivement. Cette action est irréversible.`
             : ''
         }
         confirmText="SUPPRIMER"
