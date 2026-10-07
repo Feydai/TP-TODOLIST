@@ -47,7 +47,7 @@ const useTasks = () => {
       await taskService.deleteTask(id);
 
       setTasks((currentTasks) =>
-        currentTasks.filter((task) => task._id !== id)
+        currentTasks.filter((task) => task.id !== id)
       );
     } catch (error) {
       setError(error.message);
