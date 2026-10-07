@@ -1,10 +1,12 @@
 const {
-    validateTask,
     createTask,
     getTasks,
+    getTask,
     updateTask,
     deleteTask
 } = require('../services/taskService');
+
+const { validateTask } = require('../validators/tastkValidators');
 
 async function createTaskController(req, res) {
     try {
@@ -42,6 +44,42 @@ async function getTasksController(req, res) {
         return res.status(200).json({
             items: tasks
         });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: {
+                code: 'INTERNAL_ERROR',
+                message: 'Une erreur interne est survenue'
+            }
+        });
+    }
+}
+
+async function getTaskController(req, res) {
+    try {
+        const result = await getTask(req.params.id, req.user.id);
+
+        if (result.error === 'INVALID_ID') {
+            return res.status(400).json({
+                error: {
+                    code: 'INVALID_INPUT',
+                    message: 'Identifiant invalide'
+                }
+            });
+        }
+
+        if (result.error === 'NOT_FOUND') {
+            return res.status(404).json({
+                error: {
+                    code: 'NOT_FOUND',
+                    message: 'Tâche introuvable'
+                }
+            });
+        }
+
+        return res.status(200).json(result.task);
 
     } catch (error) {
         console.error(error);
@@ -141,6 +179,7 @@ async function deleteTaskController(req, res) {
 module.exports = {
     createTaskController,
     getTasksController,
+    getTaskController,
     updateTaskController,
     deleteTaskController
 };

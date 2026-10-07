@@ -51,4 +51,19 @@ async function logout(req, res) {
   return res.status(200).json({ message: 'Déconnexion réussie' });
 }
 
-module.exports = { register, login, logout };
+async function getUser(req, res) {
+  try {
+     const user = await authService.getUserById(req.user.id);
+     if (!user) {
+       return res.status(404).json({ error: { code: 'USER_NOT_FOUND', message: 'Utilisateur non trouvé' } });
+     }
+     return res.status(200).json(user);
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ error: { code: 'INTERNAL_ERROR', message: 'Erreur interne du serveur' } });
+  }
+}
+
+module.exports = { register, login, logout, getUser };
