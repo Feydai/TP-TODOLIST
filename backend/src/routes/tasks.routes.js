@@ -1,8 +1,10 @@
 const express = require('express');
 const { createTaskController, getTasksController, updateTaskController, deleteTaskController } = require('../controllers/taskController');
+const requireAuth = require('../middlewares/requireAuth');
 
 const router = express.Router();
 
+router.use(requireAuth);
 router.post('/', createTaskController);
 router.get('/', getTasksController);
 router.patch('/:id', updateTaskController);

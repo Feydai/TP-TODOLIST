@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const healthRoutes = require('./health.routes');
-const taskRoutes = require('./taskRoutes');
+const taskRoutes = require('./tasks.routes');
 const authRoutes = require('./auth.routes');
 
 const router = Router();

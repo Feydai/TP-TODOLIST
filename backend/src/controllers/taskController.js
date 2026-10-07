@@ -19,7 +19,7 @@ async function createTaskController(req, res) {
             });
         }
 
-        const task = await createTask(req.body);
+        const task = await createTask(req.body, req.user.id);
 
         return res.status(201).json(task);
 
@@ -37,7 +37,7 @@ async function createTaskController(req, res) {
 
 async function getTasksController(req, res) {
     try {
-        const tasks = await getTasks();
+        const tasks = await getTasks(req.user.id);
 
         return res.status(200).json({
             items: tasks
@@ -68,7 +68,7 @@ async function updateTaskController(req, res) {
             });
         }
 
-        const result = await updateTask(req.params.id, req.body);
+        const result = await updateTask(req.params.id, req.body, req.user.id);
 
         if (result.error === 'INVALID_ID') {
             return res.status(400).json({
@@ -104,7 +104,7 @@ async function updateTaskController(req, res) {
 
 async function deleteTaskController(req, res) {
     try {
-        const result = await deleteTask(req.params.id);
+        const result = await deleteTask(req.params.id, req.user.id);
 
         if (result.error === 'INVALID_ID') {
             return res.status(400).json({
