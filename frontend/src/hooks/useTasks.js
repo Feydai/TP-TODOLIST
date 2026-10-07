@@ -21,6 +21,21 @@ const useTasks = () => {
     }
   }, []);
 
+  const createTask = async (taskData) => {
+    try {
+      setError('');
+
+      const newTask = await taskService.createTask(taskData);
+
+      setTasks((currentTasks) => [...currentTasks, newTask]);
+
+      return newTask;
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -46,6 +61,7 @@ const useTasks = () => {
     error,
     fetchTasks,
     deleteTask,
+    createTask,
   };
 };
 
