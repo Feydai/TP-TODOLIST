@@ -84,8 +84,15 @@ const TaskForm = ({
     <Paper
       component="form"
       onSubmit={handleSubmit}
-      sx={{ p: { xs: 3, md: 4 } }}
+      elevation={1}
+      sx={{
+        p: { xs: 2.5, md: 3 },
+        borderRadius: 2,
+        border: '1px solid',
+        borderColor: 'divider',
+      }}
     >
+      {/* Titre */}
       <TextField
         name="title"
         label="Titre"
@@ -98,6 +105,7 @@ const TaskForm = ({
         }
         required
         fullWidth
+        size="small"
         slotProps={{
           htmlInput: {
             maxLength: 120,
@@ -105,6 +113,7 @@ const TaskForm = ({
         }}
       />
 
+      {/* Statut + date */}
       <Box
         sx={{
           display: 'grid',
@@ -112,11 +121,11 @@ const TaskForm = ({
             xs: '1fr',
             md: '1fr 1fr',
           },
-          gap: 3,
-          mt: 3,
+          gap: 2,
+          mt: 2,
         }}
       >
-        <FormControl required>
+        <FormControl required size="small">
           <InputLabel>Statut</InputLabel>
 
           <Select
@@ -143,6 +152,7 @@ const TaskForm = ({
           onChange={handleChange}
           helperText="Facultative"
           fullWidth
+          size="small"
           slotProps={{
             inputLabel: {
               shrink: true,
@@ -151,6 +161,7 @@ const TaskForm = ({
         />
       </Box>
 
+      {/* Description */}
       <TextField
         name="description"
         label="Description"
@@ -162,9 +173,9 @@ const TaskForm = ({
           errors.description || `${form.description.length}/1000 · Facultative`
         }
         multiline
-        rows={5}
+        rows={4}
         fullWidth
-        sx={{ mt: 3 }}
+        sx={{ mt: 2 }}
         slotProps={{
           htmlInput: {
             maxLength: 1000,
@@ -172,12 +183,14 @@ const TaskForm = ({
         }}
       />
 
+      {/* Actions */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-          gap: 2,
-          mt: 4,
+          alignItems: 'center',
+          gap: 1.5,
+          mt: 3,
         }}
       >
         <AppButton
