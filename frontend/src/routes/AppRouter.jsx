@@ -32,7 +32,7 @@ const AppRouter = () => {
           </Route>
         </Route>
         {/* DEFAULT */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/tasks" replace />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
