@@ -15,6 +15,3 @@ down:
 
 logs:
 	docker compose -f $(COMPOSE_FILE) logs -f
-
-stop:
-	docker system prune -a --volumes -f
