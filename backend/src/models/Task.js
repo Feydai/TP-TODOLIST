@@ -40,6 +40,7 @@ const taskSchema = new mongoose.Schema(
         toJSON: {
             transform: (doc, ret) => {
                 ret.id = ret._id.toString();
+                ret.dueDate = ret.dueDate ? ret.dueDate.toISOString().slice(0, 10) : null;
                 delete ret._id;
                 delete ret.__v;
             }
