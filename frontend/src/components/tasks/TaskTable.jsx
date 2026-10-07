@@ -16,7 +16,7 @@ import TaskStatusChip from './TaskStatusChip.jsx';
 import TaskActions from './TaskActions.jsx';
 
 const formatDate = (date) => {
-  return new Date(`${date}T00:00:00`).toLocaleDateString('fr-FR', {
+  return new Date(date).toLocaleDateString('fr-FR', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -85,7 +85,9 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                   <TaskStatusChip status={task.status} />
                 </TableCell>
 
-                <TableCell sx={{ color: overdue ? 'error.main' : 'text.primary' }}>
+                <TableCell
+                  sx={{ color: overdue ? 'error.main' : 'text.primary' }}
+                >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <CalendarTodayIcon fontSize="small" />
 
@@ -93,12 +95,18 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                       variant="body2"
                       color={task.dueDate ? 'inherit' : 'text.secondary'}
                     >
-                      {task.dueDate ? formatDate(task.dueDate) : 'Aucune échéance'}
+                      {task.dueDate
+                        ? formatDate(task.dueDate)
+                        : 'Aucune échéance'}
                     </Typography>
                   </Box>
 
                   {overdue && (
-                    <Typography variant="caption" fontWeight={500} sx={{ pl: 3.5 }}>
+                    <Typography
+                      variant="caption"
+                      fontWeight={500}
+                      sx={{ pl: 3.5 }}
+                    >
                       En retard
                     </Typography>
                   )}
@@ -116,7 +124,11 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
 
           {tasks.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} align="center" sx={{ py: 5, color: 'text.secondary' }}>
+              <TableCell
+                colSpan={4}
+                align="center"
+                sx={{ py: 5, color: 'text.secondary' }}
+              >
                 Aucune tâche ne correspond à votre recherche.
               </TableCell>
             </TableRow>
