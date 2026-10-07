@@ -33,6 +33,14 @@ const getTasks = async () => {
   return handleResponse(response);
 };
 
+const getTask = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    headers: getHeaders(),
+  });
+
+  return handleResponse(response);
+};
+
 const createTask = async (task) => {
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -64,6 +72,7 @@ const deleteTask = async (id) => {
 
 export const taskService = {
   getTasks,
+  getTask,
   createTask,
   updateTask,
   deleteTask,
