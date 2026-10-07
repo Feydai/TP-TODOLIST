@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import {
   Box,
   Button,
@@ -14,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import TabLabel from '../../components/tasks/TaskLabel';
 import AddIcon from '@mui/icons-material/Add';
 import AppSnackbar from '../../components/common/AppSnackBar';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
@@ -175,13 +175,69 @@ const TaskPage = () => {
               <Tabs
                 value={filter}
                 onChange={(_, value) => setFilter(value)}
-                variant="scrollable"
-                allowScrollButtonsMobile
+                sx={{
+                  minHeight: 56,
+
+                  '& .MuiTab-root': {
+                    minHeight: 56,
+                    minWidth: 'auto',
+                    px: 2,
+                    color: 'text.secondary',
+                    textTransform: 'none',
+                  },
+
+                  '& .Mui-selected': {
+                    color: 'primary.main',
+                  },
+
+                  '& .MuiTabs-indicator': {
+                    height: 2,
+                  },
+                }}
               >
-                <Tab value="all" label={`Toutes (${tasks.length})`} />
-                <Tab value="todo" label={`À faire (${todoCount})`} />
-                <Tab value="doing" label={`En cours (${doingCount})`} />
-                <Tab value="done" label={`Terminées (${doneCount})`} />
+                <Tab
+                  value="all"
+                  label={
+                    <TabLabel
+                      label="TOUTES"
+                      count={tasks.length}
+                      active={filter === 'all'}
+                    />
+                  }
+                />
+
+                <Tab
+                  value="todo"
+                  label={
+                    <TabLabel
+                      label="À FAIRE"
+                      count={todoCount}
+                      active={filter === 'todo'}
+                    />
+                  }
+                />
+
+                <Tab
+                  value="doing"
+                  label={
+                    <TabLabel
+                      label="EN COURS"
+                      count={doingCount}
+                      active={filter === 'doing'}
+                    />
+                  }
+                />
+
+                <Tab
+                  value="done"
+                  label={
+                    <TabLabel
+                      label="TERMINÉES"
+                      count={doneCount}
+                      active={filter === 'done'}
+                    />
+                  }
+                />
               </Tabs>
 
               <TextField
