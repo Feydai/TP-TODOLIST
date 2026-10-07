@@ -48,7 +48,7 @@ async function updateTask(id, data, ownerId) {
             })
         },
         {
-            new: true,
+            returnDocument: 'after',
             runValidators: true
         }
     );
