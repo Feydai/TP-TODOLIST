@@ -15,7 +15,7 @@ async function createTask(data, ownerId) {
 }
 
 async function getTasks(ownerId) {
-    const tasks = await Task.find({ ownerId });
+    const tasks = await Task.find({ ownerId }).sort({ createdAt: -1 });
 
     return tasks;
 }
