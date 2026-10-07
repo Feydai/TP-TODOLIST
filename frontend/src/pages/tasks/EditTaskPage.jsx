@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import {
   Box,
   CircularProgress,
@@ -7,6 +8,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import TaskForm from '../../components/tasks/TaskForm.jsx';
@@ -23,11 +25,27 @@ const EditTaskPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    taskService
-      .getTask(id)
-      .then((data) => setTask(data))
-      .catch((error) => setError(error.message))
-      .finally(() => setLoading(false));
+    const fetchTask = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        const data = await taskService.getTaskById(id);
+
+        setTask({
+          ...data,
+
+          // input type="date" attend YYYY-MM-DD
+          dueDate: data.dueDate ? data.dueDate.slice(0, 10) : '',
+        });
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTask();
   }, [id]);
 
   const handleUpdate = async (data) => {
@@ -37,7 +55,7 @@ const EditTaskPage = () => {
 
       await taskService.updateTask(id, data);
 
-      navigate('/tasks');
+      navigate(`/tasks/${id}`);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -46,19 +64,30 @@ const EditTaskPage = () => {
   };
 
   const handleCancel = () => {
-    navigate('/tasks');
+    navigate(`/tasks/${id}`);
   };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mt: 10,
+        }}
+      >
         <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 5 }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        py: { xs: 3, md: 4 },
+      }}
+    >
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Mes tâches / {task ? task.title : 'Tâche'} / Modifier
       </Typography>
@@ -71,11 +100,20 @@ const EditTaskPage = () => {
           mb: 3,
         }}
       >
-        <IconButton onClick={handleCancel} aria-label="Retour aux tâches">
+        <IconButton onClick={handleCancel} aria-label="Retour à la tâche">
           <ArrowBackIcon />
         </IconButton>
 
-        <Typography variant="h4" fontWeight={600}>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: 24,
+              md: 28,
+            },
+            fontWeight: 500,
+            color: 'text.primary',
+          }}
+        >
           Modifier la tâche
         </Typography>
       </Box>

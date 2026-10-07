@@ -45,10 +45,11 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
           tableLayout: 'fixed',
         }}
       >
+        {/* HEADER */}
         <TableHead>
           <TableRow
             sx={{
-              bgcolor: 'action.hover',
+              bgcolor: '#ffffff',
 
               '& th': {
                 py: 2,
@@ -57,31 +58,56 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
             }}
           >
             <TableCell sx={{ width: '50%' }}>
-              <Typography variant="body2" fontWeight={600}>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#212121',
+                }}
+              >
                 Titre
               </Typography>
             </TableCell>
 
             <TableCell sx={{ width: '15%' }}>
-              <Typography variant="body2" fontWeight={600}>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#212121',
+                }}
+              >
                 Statut
               </Typography>
             </TableCell>
 
             <TableCell sx={{ width: '20%' }}>
-              <Typography variant="body2" fontWeight={600}>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#212121',
+                }}
+              >
                 Échéance
               </Typography>
             </TableCell>
 
             <TableCell align="center" sx={{ width: '15%' }}>
-              <Typography variant="body2" fontWeight={600}>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#212121',
+                }}
+              >
                 Actions
               </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
 
+        {/* BODY */}
         <TableBody>
           {tasks.map((task) => {
             const overdue = isOverdue(task);
@@ -92,7 +118,7 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                 hover
                 sx={{
                   '& td': {
-                    py: 2.5,
+                    py: 2.25,
                     borderColor: 'divider',
                   },
 
@@ -101,33 +127,40 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                   },
                 }}
               >
-                {/* Titre + description */}
+                {/* TITRE + DESCRIPTION */}
                 <TableCell>
                   <Link
                     component="button"
-                    underline="hover"
+                    underline="none"
                     color="text.primary"
                     onClick={() => onView(task.id)}
                     sx={{
                       display: 'block',
                       maxWidth: '100%',
                       fontSize: 16,
-                      fontWeight: 600,
+                      fontWeight: 700,
+                      lineHeight: 1.4,
                       textAlign: 'left',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
+                      cursor: 'pointer',
+
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
                     }}
                   >
                     {task.title}
                   </Link>
 
                   <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    fontStyle={task.description ? 'normal' : 'italic'}
                     sx={{
-                      mt: 0.5,
+                      mt: 0.4,
+                      fontSize: 14,
+                      fontWeight: 400,
+                      color: '#6B7280',
+                      fontStyle: task.description ? 'normal' : 'italic',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -137,12 +170,12 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                   </Typography>
                 </TableCell>
 
-                {/* Statut */}
+                {/* STATUT */}
                 <TableCell>
                   <TaskStatusChip status={task.status} />
                 </TableCell>
 
-                {/* Date */}
+                {/* ÉCHÉANCE */}
                 <TableCell>
                   <Box
                     sx={{
@@ -155,8 +188,11 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                     <CalendarTodayOutlinedIcon fontSize="small" />
 
                     <Typography
-                      variant="body2"
-                      color={task.dueDate ? 'inherit' : 'text.secondary'}
+                      sx={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: task.dueDate ? 'inherit' : '#6B7280',
+                      }}
                     >
                       {task.dueDate
                         ? formatDate(task.dueDate)
@@ -166,27 +202,41 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
 
                   {overdue && (
                     <Typography
-                      variant="caption"
-                      color="error.main"
-                      fontWeight={600}
-                      sx={{ ml: 3.5 }}
+                      sx={{
+                        display: 'block',
+                        mt: 0.25,
+                        ml: 3.5,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: 'error.main',
+                      }}
                     >
                       En retard
                     </Typography>
                   )}
                 </TableCell>
 
-                {/* Actions */}
+                {/* ACTIONS */}
                 <TableCell align="center">
-                  <TaskActions
-                    onEdit={() => onEdit(task.id)}
-                    onDelete={() => onDelete(task)}
-                  />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TaskActions
+                      onView={() => onView(task.id)}
+                      onEdit={() => onEdit(task.id)}
+                      onDelete={() => onDelete(task)}
+                    />
+                  </Box>
                 </TableCell>
               </TableRow>
             );
           })}
 
+          {/* AUCUNE TÂCHE */}
           {tasks.length === 0 && (
             <TableRow>
               <TableCell
@@ -197,7 +247,12 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                   borderBottom: 0,
                 }}
               >
-                <Typography variant="body1" color="text.secondary">
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    color: '#6B7280',
+                  }}
+                >
                   Aucune tâche ne correspond à votre recherche.
                 </Typography>
               </TableCell>
