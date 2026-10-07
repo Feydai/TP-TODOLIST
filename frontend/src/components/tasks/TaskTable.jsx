@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 
 import TaskStatusChip from './TaskStatusChip.jsx';
 import TaskActions from './TaskActions.jsx';
@@ -28,28 +28,56 @@ const isOverdue = (task) => {
     return false;
   }
 
-  const today = new Date().toISOString().slice(0, 10);
+  const dueDate = new Date(task.dueDate);
+  const today = new Date();
 
-  return task.dueDate < today;
+  today.setHours(0, 0, 0, 0);
+
+  return dueDate < today;
 };
 
 const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
   return (
     <TableContainer>
-      <Table sx={{ minWidth: 720 }}>
+      <Table
+        sx={{
+          minWidth: 720,
+          tableLayout: 'fixed',
+        }}
+      >
         <TableHead>
-          <TableRow>
-            <TableCell>
-              <strong>Titre</strong>
+          <TableRow
+            sx={{
+              bgcolor: 'action.hover',
+
+              '& th': {
+                py: 2,
+                borderColor: 'divider',
+              },
+            }}
+          >
+            <TableCell sx={{ width: '50%' }}>
+              <Typography variant="body2" fontWeight={600}>
+                Titre
+              </Typography>
             </TableCell>
-            <TableCell sx={{ width: 150 }}>
-              <strong>Statut</strong>
+
+            <TableCell sx={{ width: '15%' }}>
+              <Typography variant="body2" fontWeight={600}>
+                Statut
+              </Typography>
             </TableCell>
-            <TableCell sx={{ width: 190 }}>
-              <strong>Échéance</strong>
+
+            <TableCell sx={{ width: '20%' }}>
+              <Typography variant="body2" fontWeight={600}>
+                Échéance
+              </Typography>
             </TableCell>
-            <TableCell align="right" sx={{ width: 120 }}>
-              <strong>Actions</strong>
+
+            <TableCell align="center" sx={{ width: '15%' }}>
+              <Typography variant="body2" fontWeight={600}>
+                Actions
+              </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -59,14 +87,37 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
             const overdue = isOverdue(task);
 
             return (
-              <TableRow key={task.id} hover>
+              <TableRow
+                key={task.id}
+                hover
+                sx={{
+                  '& td': {
+                    py: 2.5,
+                    borderColor: 'divider',
+                  },
+
+                  '&:hover': {
+                    bgcolor: 'action.hover',
+                  },
+                }}
+              >
+                {/* Titre + description */}
                 <TableCell>
                   <Link
                     component="button"
                     underline="hover"
-                    color="inherit"
+                    color="text.primary"
                     onClick={() => onView(task.id)}
-                    sx={{ fontWeight: 500, fontSize: 16, textAlign: 'left' }}
+                    sx={{
+                      display: 'block',
+                      maxWidth: '100%',
+                      fontSize: 16,
+                      fontWeight: 600,
+                      textAlign: 'left',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
                   >
                     {task.title}
                   </Link>
@@ -75,21 +126,33 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                     variant="body2"
                     color="text.secondary"
                     fontStyle={task.description ? 'normal' : 'italic'}
-                    noWrap
+                    sx={{
+                      mt: 0.5,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
                   >
                     {task.description || 'Aucune description'}
                   </Typography>
                 </TableCell>
 
+                {/* Statut */}
                 <TableCell>
                   <TaskStatusChip status={task.status} />
                 </TableCell>
 
-                <TableCell
-                  sx={{ color: overdue ? 'error.main' : 'text.primary' }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CalendarTodayIcon fontSize="small" />
+                {/* Date */}
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      color: overdue ? 'error.main' : 'text.primary',
+                    }}
+                  >
+                    <CalendarTodayOutlinedIcon fontSize="small" />
 
                     <Typography
                       variant="body2"
@@ -104,15 +167,17 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
                   {overdue && (
                     <Typography
                       variant="caption"
-                      fontWeight={500}
-                      sx={{ pl: 3.5 }}
+                      color="error.main"
+                      fontWeight={600}
+                      sx={{ ml: 3.5 }}
                     >
                       En retard
                     </Typography>
                   )}
                 </TableCell>
 
-                <TableCell align="right">
+                {/* Actions */}
+                <TableCell align="center">
                   <TaskActions
                     onEdit={() => onEdit(task.id)}
                     onDelete={() => onDelete(task)}
@@ -127,9 +192,14 @@ const TaskTable = ({ tasks, onEdit, onDelete, onView }) => {
               <TableCell
                 colSpan={4}
                 align="center"
-                sx={{ py: 5, color: 'text.secondary' }}
+                sx={{
+                  py: 6,
+                  borderBottom: 0,
+                }}
               >
-                Aucune tâche ne correspond à votre recherche.
+                <Typography variant="body1" color="text.secondary">
+                  Aucune tâche ne correspond à votre recherche.
+                </Typography>
               </TableCell>
             </TableRow>
           )}
