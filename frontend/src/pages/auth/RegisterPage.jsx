@@ -1,18 +1,16 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Step from '../../components/auth/Step.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
-import AppButton from '../../components/common/AppButton.jsx';
 import {
-  Alert,
   Box,
-  Button,
   Divider,
   IconButton,
   InputAdornment,
   TextField,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Step from '../../components/auth/Step.jsx';
+import AppButton from '../../components/common/AppButton.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';

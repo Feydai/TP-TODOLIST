@@ -1,9 +1,8 @@
-import { createContext, useState } from 'react';
+import { useState } from 'react';
+import { AuthContext } from './AuthContext';
 import { authService } from '../services/authService';
 
-export const AuthContext = createContext(null);
-
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (email, password) => {
@@ -43,3 +42,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthProvider;
