@@ -3,13 +3,20 @@ import { AuthContext } from './AuthContext';
 import { authService } from '../services/authService';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem('user'))
+  );
+
+  const saveSession = (data) => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    setUser(data.user);
+  };
 
   const login = async (email, password) => {
     const data = await authService.login(email, password);
 
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
+    saveSession(data);
 
     return data;
   };
@@ -17,14 +24,14 @@ const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     const data = await authService.register(email, password);
 
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
+    saveSession(data);
 
     return data;
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
   };
 
