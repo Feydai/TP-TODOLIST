@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
-
+import AppSnackbar from '../../components/common/AppSnackBar';
 import AppButton from '../../components/common/AppButton.jsx';
 import ConfirmDialog from '../../components/common/ConfirmDialogue.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
@@ -28,7 +28,11 @@ const TaskPage = () => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [taskToDelete, setTaskToDelete] = useState(null);
-
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
   const filteredTasks = tasks?.filter((task) => {
     const matchesStatus = filter === 'all' || task.status === filter;
 
@@ -51,10 +55,21 @@ const TaskPage = () => {
     }
 
     try {
-      await deleteTask(taskToDelete._id);
+      await deleteTask(taskToDelete.id);
+
       setTaskToDelete(null);
-    } catch {
-      // L'erreur est déjà gérée par useTasks
+
+      setSnackbar({
+        open: true,
+        message: 'Tâche supprimée avec succès',
+        severity: 'success',
+      });
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: error.message || 'Impossible de supprimer la tâche',
+        severity: 'error',
+      });
     }
   };
 
@@ -151,6 +166,17 @@ const TaskPage = () => {
         confirmText="SUPPRIMER"
         onCancel={() => setTaskToDelete(null)}
         onConfirm={handleDelete}
+      />
+      <AppSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() =>
+          setSnackbar((current) => ({
+            ...current,
+            open: false,
+          }))
+        }
       />
     </Container>
   );
