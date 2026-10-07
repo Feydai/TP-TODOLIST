@@ -36,7 +36,7 @@ const LoginPage = () => {
 
       await login(email, password);
 
-      navigate('/dashboard');
+      navigate('/tasks');
     } catch (error) {
       setError(error.message);
     }
